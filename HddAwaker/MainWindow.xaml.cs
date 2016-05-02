@@ -128,7 +128,7 @@ namespace HddAwaker
             await fileStream.WriteAsync(writtenArray, 0, 1024);
             fileStream.Flush();
             fileStream.Dispose();
-            GC.Collect();
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
 
     }
