@@ -68,6 +68,8 @@ namespace HddAwaker
         {
             this.Hide();
             refreshDeviceList();
+            readSettings();
+            startTimer(durationTimeSettings);
         }
 
         private void refreshDeviceList()
@@ -115,7 +117,7 @@ namespace HddAwaker
 
         private async Task doDiskOperation()
         {
-            byte[] writtenArray = new byte[1024]; // 1MB data buffer
+            byte[] writtenArray = new byte[1024]; // 1KB data buffer
             Random randomGenerator = new Random();
             randomGenerator.NextBytes(writtenArray);
 
@@ -124,7 +126,9 @@ namespace HddAwaker
 
             FileStream fileStream = File.Create(driveLetterSettings + @"\awaker\awaker.bin");
             await fileStream.WriteAsync(writtenArray, 0, 1024);
+            fileStream.Flush();
             fileStream.Dispose();
+            GC.Collect();
         }
 
     }
